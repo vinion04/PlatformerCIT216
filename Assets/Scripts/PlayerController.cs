@@ -9,13 +9,13 @@ public class PlayerController : MonoBehaviour
 {
     //private
     private Animator animator;
-    private SpriteRenderer sprite_r;
-    private Rigidbody2D body;
     private Vector2 movementVector;
     private bool isGrounded = false;
     private bool jump = false;
 
     //public
+    public SpriteRenderer sprite_r;
+    public Rigidbody2D body;
     public float speed = 3;
     public float jumpForce = 300;
     public float maxSpeed = 7f;
@@ -86,10 +86,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //restart the game if player leaves platform or falls in lava
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.CompareTag("Boundary"))
         {
+            GameManager.instance.DecreaseLives();   //decrease lives when out of bounds
             SceneManager.LoadScene(0);
         }
     }
