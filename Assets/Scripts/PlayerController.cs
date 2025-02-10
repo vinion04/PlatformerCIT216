@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 movementVector;
     private bool isGrounded = false;
     private bool jump = false;
+    private float shootRate = 0.3f;
+    private float nextShoot = 0;
 
     //public
     public SpriteRenderer sprite_r;
@@ -20,6 +22,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 300;
     public float maxSpeed = 7f;
     public float gravityMultiplier = 3f;
+    public GameObject shoot;    //for our bullets
+    public Transform shootPoint;
 
     void Start()
     {
@@ -83,6 +87,17 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
             Debug.Log("Touching ground");
+        }
+    }
+
+    public void OnShoot(InputValue movementValue)
+    {
+        Debug.Log("Shooting");
+        if (Time.time >= nextShoot)
+        {
+            nextShoot = Time.time + shootRate;
+            animator.SetTrigger("isShooting");
+            Instantiate(shoot, shootPoint.position, shootPoint.rotation);
         }
     }
 
