@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private bool jump = false;
     private float shootRate = 0.3f;
     private float nextShoot = 0;
+    private bool facingRight = true;
+    private AudioSource shootSound;
 
     //public
     public SpriteRenderer sprite_r;
@@ -30,26 +32,27 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite_r = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
+        shootSound = GetComponent<AudioSource>();
     }
-
     void Update()
     {
         animator.SetFloat("speed", Mathf.Abs(movementVector.x));
-        if (movementVector.x > 0 && Mathf.Abs( body.velocity.x) < maxSpeed)
+        if (movementVector.x > 0 && Mathf.Abs( body.velocity.x) < maxSpeed && !facingRight)
         {
-            sprite_r.flipX = false;
+            Flip();
+            facingRight = true;
             body.AddForce(Vector2.right * speed);
         }
 
-        else if (movementVector.x < 0 && Mathf.Abs(body.velocity.x) < maxSpeed)
+        else if (movementVector.x < 0 && Mathf.Abs(body.velocity.x) < maxSpeed && facingRight)
         {
-            sprite_r.flipX = true;
+            Flip();
+            facingRight = false;
             body.AddForce(Vector2.left * speed);
         }
 
         if(jump)
         {
-            //StartCoroutine("LerpJump");
             body.AddForce(Vector2.up * jumpForce);
             jump = false;
             isGrounded = false;
@@ -97,7 +100,8 @@ public class PlayerController : MonoBehaviour
         {
             nextShoot = Time.time + shootRate;
             animator.SetTrigger("isShooting");
-            Instantiate(shoot, shootPoint.position, shootPoint.rotation);
+            Instantiate(shoot, shootPoint.position, facingRight ? shootPoint.rotation : Quaternion.Euler(0, 180, 0));
+            shootSound.PlayOneShot(shootSound.clip, 1f);
         }
     }
 
@@ -109,5 +113,20 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.DecreaseLives();   //decrease lives when out of bounds
             SceneManager.LoadScene(0);
         }
+    }
+
+    public Vector2 GetDirection()
+    {
+        if (facingRight)
+            return Vector2.right;
+        else
+            return Vector2.left;
+    }
+
+    void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x = theScale.x * -1;
+        transform.localScale = theScale;
     }
 }
