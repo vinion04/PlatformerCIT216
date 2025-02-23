@@ -34,22 +34,13 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         shootSound = GetComponent<AudioSource>();
     }
-    void Update()
+    void FixedUpdate()
     {
         animator.SetFloat("speed", Mathf.Abs(movementVector.x));
-        if (movementVector.x > 0 && Mathf.Abs( body.velocity.x) < maxSpeed && !facingRight)
-        {
-            Flip();
-            facingRight = true;
-            body.AddForce(Vector2.right * speed);
-        }
-
-        else if (movementVector.x < 0 && Mathf.Abs(body.velocity.x) < maxSpeed && facingRight)
-        {
-            Flip();
-            facingRight = false;
-            body.AddForce(Vector2.left * speed);
-        }
+        if(movementVector.x > 0 && Mathf.Abs( body.velocity.x) < maxSpeed)
+            body.velocity = new Vector2(movementVector.x * speed, body.velocity.y);
+        else if (movementVector.x < 0 && Mathf.Abs(body.velocity.x) < maxSpeed)
+            body.velocity = new Vector2(movementVector.x * speed, body.velocity.y);
 
         if(jump)
         {
@@ -65,6 +56,21 @@ public class PlayerController : MonoBehaviour
         else
         {
             body.gravityScale = 1;
+        }
+
+    }
+    void Update()
+    {
+        if (movementVector.x > 0 && !facingRight)
+        {
+            Flip();
+            facingRight = true;
+        }
+
+        else if (movementVector.x < 0 && facingRight)
+        {
+            Flip();
+            facingRight = false;
         }
 
     }

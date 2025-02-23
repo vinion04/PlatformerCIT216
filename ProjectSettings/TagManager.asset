@@ -8,6 +8,7 @@ TagManager:
   - Boundary
   - Shoot
   - Enemy
+  - Text
   layers:
   - Default
   - TransparentFX

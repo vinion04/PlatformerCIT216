@@ -28,9 +28,9 @@ public class DragonController : MonoBehaviour
 
         //dragon gets jumped on
         RaycastHit2D headhit = Physics2D.Raycast(transform.position, Vector2.up, 1f);
-        if(hit.collider != null)
+        if(headhit.collider != null)
         {
-            if (hit.collider.gameObject.CompareTag("Player"))
+            if (headhit.collider.gameObject.CompareTag("Player"))
             {
                 Destroy(gameObject);
             }
