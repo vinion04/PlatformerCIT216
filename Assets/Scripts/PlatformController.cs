@@ -20,7 +20,6 @@ public class PlatformController : MonoBehaviour
     {
         while(true)
         {
-            Debug.Log("Platform moving. Direction: " + (flip ? "Left" : "Right"));
             if(!flip)
                 rb.velocity = new Vector2(speed, rb.velocity.y);
             else
@@ -29,8 +28,6 @@ public class PlatformController : MonoBehaviour
             yield return new WaitForSeconds(2f);
 
             flip = !flip;
-
-            Debug.Log("Direction changed. New direction: " + (flip ? "Left" : "Right"));
         }
     }
 }

@@ -15,7 +15,7 @@ public class ShootController : MonoBehaviour
         direction = player.GetComponent<PlayerController>().GetDirection();
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.velocity = force * direction;
-        Invoke("Die", 4f);  //wait 4 seconds before destroying bullet
+        Invoke("Die", 1f);  //wait 4 seconds before destroying bullet
     }
 
     void Die()
