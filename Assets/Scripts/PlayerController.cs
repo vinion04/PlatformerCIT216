@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public float gravityMultiplier = 3f;
     public GameObject shoot;    //for our bullets
     public Transform shootPoint;
+    public GameManager gameManager;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
         sprite_r = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
         shootSound = GetComponent<AudioSource>();
+
     }
     void FixedUpdate()
     {
@@ -118,6 +120,16 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.instance.DecreaseLives();   //decrease lives when out of bounds
             SceneManager.LoadScene(0);
+        }
+        else if(collision.gameObject.CompareTag("GoodBoundary"))
+        {
+            Debug.Log("Hit good boundary");
+            SceneManager.LoadScene(1);
+        }
+        else if(collision.gameObject.CompareTag("EndBoundary"))
+        {
+            Debug.Log("Hit end boundary");
+            gameManager.EndGame();
         }
     }
 

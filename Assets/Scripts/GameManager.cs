@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 
     //public
     public static GameManager instance;
+    public Canvas endGame;
 
     void Awake()
     {
@@ -20,6 +21,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);//handles duplicate GameObjects
 
         DontDestroyOnLoad(gameObject);  //stays persistent
+    }
+
+    void Start()
+    {
+        endGame.enabled = false;
     }
 
     public void DecreaseLives()
@@ -36,5 +42,10 @@ public class GameManager : MonoBehaviour
     public int GetLives()       //getter
     {
         return lives;
+    }
+
+    public void EndGame()
+    {
+        endGame.enabled = true;
     }
 }

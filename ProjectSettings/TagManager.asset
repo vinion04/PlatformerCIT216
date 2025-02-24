@@ -9,6 +9,8 @@ TagManager:
   - Shoot
   - Enemy
   - Text
+  - GoodBoundary
+  - EndBoundary
   layers:
   - Default
   - TransparentFX
